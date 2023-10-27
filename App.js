@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList, Image, TextInput, Switch } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, Switch, Button, Keyboard } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, {useState} from 'react';
 
@@ -7,8 +7,9 @@ import React, {useState} from 'react';
 function Header () {
   return (
     <View style={styles.topBarContainer}>
-      <Image source={require('./sources/vector.png')}/>
+      <Image style={styles.topBarImage} source={require('./sources/burger.png')}/>
       <Text style={styles.topbar}>AUTOFOCUS</Text>
+      <Text></Text>
     </View>
   )
 }
@@ -16,33 +17,34 @@ function Header () {
 const TaskTitle = () => {
   const [text, onChangeText] = useState('');
   return (
-    <View>
       <TextInput
-        placeholder = 'Tpye your task title'
+        placeholder = 'Type your task title'
         onChangeText = {newText => onChangeText(newText)}
         value = {text}
+        style={styles.taskTitle}
         />
-    </View>
   )
 }
 
-const DeadLine = () => {
+const DeadLine = (props) => {
   const [chosenDate, setChosenDate] = useState(new Date());
   const setActualDate = (event, theDate)=>{
     setChosenDate(theDate)
   }
   return (
-    <View>
+    <View style={props.style}>
+      <Text style={styles.deadLineText}>{props.txt}</Text>
       <DateTimePicker value = {chosenDate} onChange = {setActualDate} />
     </View>
   )
 }
 
-const Importance = () => {
+const Importance = (props) => {
   const [isEnabled, setIsEnabled] = useState (false); 
   const toggleSwitch = () => setIsEnabled(previousSate => !previousSate); 
   return (
-    <View>
+    <View style={props.style}>
+      <Text style={styles.importanceText}>{props.txt}</Text>
       <Switch
         trackColor={{false: 'red', true: 'green'}}
         thumbColor={isEnabled ? 'yellow':'orange'}
@@ -54,17 +56,25 @@ const Importance = () => {
   )
 }
 
-const Description =()=>{
+const Description =(props)=>{
   const [text, onChangeText] = useState(''); 
   return (
     <View>
-      <Text>Description</Text>
-      <TextInput 
+      <Text style={styles.description}>Description: </Text>
+      <TextInput style={styles.descriptionInput}
+        multiline = {true}
         onChangeText={onChangeText}
         value={text}
+        onBlur={Keyboard.dismiss}
+        placeholder={props.txt}
       />
     </View>
-  
+  )
+}
+
+const Submit =(props)=>{
+  return(
+    <Button style={props.style} title={"Submit"}></Button>
   )
 }
 
@@ -72,17 +82,11 @@ const Description =()=>{
 function Body (){
   return (
     <View style= {styles.bodyContainer}>
-      <View style={styles.bodyText}>
-        <TaskTitle />
-      </View>
-      <View>
-          <DeadLine txt={"Due by "}/>
-          <Importance txt={"Important"} />
-      </View>
-      <View>
+        <TaskTitle/>
+        <DeadLine style={styles.deadLine} txt={"Due by: "}/>
+        <Importance style={styles.importance} txt={"Importance"} />
         <Description txt={'description text'} />
-      </View>
-      
+        <Submit style={styles.submit} />
     </View>
     )
 }
@@ -107,30 +111,79 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'red',
     flexDirection:'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
     borderBottomWidth: 3,
   },
   topbar: {
     fontSize: 24,
     fontColor: 'black',
     paddingTop: 50,
-    paddingBottom: 40,
   },
+
+  topBarImage:{
+  },
+
   bodyContainer: {
     flex:8,
     alignItems: 'stretch',
-    justifyContent: 'center',
     backgroundColor: 'green',
   },
 
-  bodyText:{
-    flex: 0.9,
+  taskTitle:{
+    marginTop: 20,
     marginRight: 30, 
     marginLeft: 30,
     borderWidth: 2,
-    padding: 30,
+    padding: 11,
   },
+
+  deadLine:{
+    marginTop: 20,
+    marginRight: 50,
+    marginLeft: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between' 
+  },
+  deadLineText:{
+    fontSize: 20,
+  },
+
+  importance:{
+    marginTop: 20,
+    flexDirection: 'row',
+    marginRight: 50,
+    marginLeft: 50, 
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  importanceText:{
+    fontSize: 20,
+  },
+
+  description:{
+    marginTop: 20,
+    marginRight: 50, 
+    marginLeft: 50,
+    fontSize: 20,
+  },
+
+  descriptionInput: {
+    marginTop: 20,
+    marginRight: 30, 
+    marginLeft: 30,
+    borderWidth: 2,
+    padding: 11,
+  },
+
+  submit:{
+    marginTop: 30,
+    borderWidth: 10, 
+    backgroundColor: 'red',
+    fontSize: 100,
+  },
+
   heading:{
     fontSize: 36,
     marginBottom: 30,
