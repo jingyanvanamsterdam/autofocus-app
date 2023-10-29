@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TextInput, Switch, Button, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, Switch, Button, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, {useState} from 'react';
 
@@ -56,19 +56,24 @@ const Importance = (props) => {
   )
 }
 
+const DismissKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
+    {children}
+  </TouchableWithoutFeedback>
+);
+
 const Description =(props)=>{
   const [text, onChangeText] = useState(''); 
   return (
-    <View>
-      <Text style={styles.description}>Description: </Text>
-      <TextInput style={styles.descriptionInput}
+      <View>
+        <Text style={styles.description}>Description: </Text>
+        <TextInput style={styles.descriptionInput}
         multiline = {true}
         onChangeText={onChangeText}
         value={text}
-        onBlur={Keyboard.dismiss}
         placeholder={props.txt}
-      />
-    </View>
+        />
+      </View>
   )
 }
 
@@ -81,13 +86,15 @@ const Submit =(props)=>{
 
 function Body (){
   return (
-    <View style= {styles.bodyContainer}>
+    <DismissKeyboard>
+      <View style= {styles.bodyContainer}>
         <TaskTitle/>
         <DeadLine style={styles.deadLine} txt={"Due by: "}/>
         <Importance style={styles.importance} txt={"Importance"} />
         <Description txt={'description text'} />
         <Submit style={styles.submit} />
-    </View>
+     </View>
+    </DismissKeyboard>
     )
 }
 
