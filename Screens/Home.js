@@ -1,14 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList, Image, Button } from 'react-native';
-
-
-function Header () {
-  return (
-    <View style={styles.topBarContainer}>
-      <Text style={styles.topbar}>AUTOFOCUS</Text>
-    </View>
-  )
-}
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 
 function Body (){
   return (
@@ -38,18 +28,18 @@ function Body (){
           <Text style={styles.bodyText}>{item.key}</Text>
         }
       />
-      <Button title="Click here" />
     </View>
     )
 }
 
+/*
 function Footer (){
   return (
     <View style={styles.footerContainer}>
       <Image style={styles.footerContent} source={require('./sources/add-button.png')}></Image>
     </View>
   )
-}
+}*/
 
 
 const styles = StyleSheet.create({
@@ -97,12 +87,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function App() {
+export default function Home() {
   return (
     <View style={styles.container}>
-      <Header/>
       <Body/>
-      <Footer/>
     </View>
   );
 }

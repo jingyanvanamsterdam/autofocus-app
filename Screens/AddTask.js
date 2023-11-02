@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TextInput, Switch, Button, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Switch, Button, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, {useState} from 'react';
 
@@ -16,25 +15,25 @@ const TaskTitle = () => {
     )
   }
   
-  const DeadLine = (props) => {
+  const DeadLine = () => {
     const [chosenDate, setChosenDate] = useState(new Date());
     const setActualDate = (event, theDate)=>{
       setChosenDate(theDate)
     }
     return (
-      <View style={props.style}>
-        <Text style={styles.deadLineText}>{props.txt}</Text>
+      <View style={styles.deadLine}>
+        <Text style={styles.deadLineText}>Due by:</Text>
         <DateTimePicker value = {chosenDate} onChange = {setActualDate} />
       </View>
     )
   }
   
-  const Importance = (props) => {
+  const Importance = () => {
     const [isEnabled, setIsEnabled] = useState (false); 
     const toggleSwitch = () => setIsEnabled(previousSate => !previousSate); 
     return (
-      <View style={props.style}>
-        <Text style={styles.importanceText}>{props.txt}</Text>
+      <View style={styles.importance}>
+        <Text style={styles.importanceText}>Importance</Text>
         <Switch
           trackColor={{false: 'red', true: 'green'}}
           thumbColor={isEnabled ? 'yellow':'orange'}
@@ -52,36 +51,39 @@ const TaskTitle = () => {
     </TouchableWithoutFeedback>
   );
   
-  const Description =(props)=>{
-    const [text, onChangeText] = useState(''); 
+  const Description =()=>{
+    const [text, setChangeText] = useState(''); 
     return (
         <View>
           <Text style={styles.description}>Description: </Text>
           <TextInput style={styles.descriptionInput}
           multiline = {true}
-          onChangeText={onChangeText}
+          onChangeText= {setChangeText}
           value={text}
-          placeholder={props.txt}
+          placeholder={'description text'}
           />
         </View>
     )
   }
   
-  const Submit =(props)=>{
+  const Submit =()=>{
     return(
-      <Button style={props.style} title={"Submit"}></Button>
+      <Button 
+      style={styles.submit} 
+      title={"Submit"} />
     )
   }
 
   function Body (){
+ 
     return (
       <DismissKeyboard>
         <View style= {styles.bodyContainer}>
           <TaskTitle/>
-          <DeadLine style={styles.deadLine} txt={"Due by: "}/>
-          <Importance style={styles.importance} txt={"Importance"} />
-          <Description txt={'description text'} />
-          <Submit style={styles.submit} />
+          <DeadLine />
+          <Importance />
+          <Description />
+          <Submit />
        </View>
       </DismissKeyboard>
       )
