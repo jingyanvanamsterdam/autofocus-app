@@ -74,43 +74,12 @@ const TaskTitle = () => {
     )
   }
 
-  function Body (){
- 
-    return (
-      <DismissKeyboard>
-        <View style= {styles.bodyContainer}>
-          <TaskTitle/>
-          <DeadLine />
-          <Importance />
-          <Description />
-          <Submit />
-       </View>
-      </DismissKeyboard>
-      )
-  }
-
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'stretch',
       justifyContent: 'space-between'
-    },
-    topBarContainer : {
-      flex: 1,
-      backgroundColor: 'red',
-      flexDirection:'row',
-      justifyContent: 'space-between',
-      alignItems: 'baseline',
-      borderBottomWidth: 3,
-    },
-    topbar: {
-      fontSize: 24,
-      fontColor: 'black',
-      paddingTop: 50,
-    },
-  
-    topBarImage:{
     },
   
     bodyContainer: {
@@ -172,27 +141,6 @@ const TaskTitle = () => {
       backgroundColor: 'red',
       fontSize: 100,
     },
-  
-    heading:{
-      fontSize: 36,
-      marginBottom: 30,
-    },
-    featureStyle:{
-      fontSize: 24,
-      marginBottom: 30,
-    },
-    descriptionStyle:{
-      fontSize: 24,
-    },
-    footerContainer: {
-      flex: 1,
-      borderTopWidth: 3,
-      backgroundColor: 'blue',
-      alignItems: 'center',
-    },
-    footerContent:{
-      marginTop: 15,
-    }
   });
 
   export default function AddTask (){
@@ -200,10 +148,10 @@ const TaskTitle = () => {
       <DismissKeyboard>
         <View style= {styles.bodyContainer}>
           <TaskTitle/>
-          <DeadLine style={styles.deadLine} txt={"Due by: "}/>
-          <Importance style={styles.importance} txt={"Importance"} />
-          <Description txt={'description text'} />
-          <Submit style={styles.submit} />
+          <DeadLine />
+          <Importance />
+          <Description />
+          <Submit />
        </View>
       </DismissKeyboard>
       )

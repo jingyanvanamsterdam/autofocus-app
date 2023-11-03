@@ -1,10 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TextInput, Switch, Button, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import React, {useState} from 'react';
+import { StyleSheet, Text, View, Image} from 'react-native';
+import React from 'react';
 import Navigation from './Navigation'; 
-
-
 
 function Header () {
   return (
@@ -16,14 +12,14 @@ function Header () {
   )
 }
 
-function Footer (){
+export default function App() {
   return (
-    <View style={styles.footerContainer}>
-      <Image style={styles.footerContent} source={require('./sources/add-button.png')}></Image>
+    <View style={styles.container}>
+      <Header />
+      <Navigation />
     </View>
-  )
+  );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -48,18 +44,9 @@ const styles = StyleSheet.create({
 
   topBarImage:{
   },
-
-
 });
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Header />
-      <Navigation />
-    </View>
-  );
-}
+
 
 
 

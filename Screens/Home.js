@@ -1,45 +1,22 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
+import {tasks} from '../data/tasks'
 
-function Body (){
+function TaskList ({ navigation }){
   return (
-    <View style= {styles.bodyContainer}>
+    <View style= {styles.TaskListContainer}>
       <FlatList
-        data={[
-          {key: 'task1'},
-          {key: 'task2'},
-          {key: 'task3'},
-          {key: 'task4'},
-          {key: 'task5'},
-          {key: 'task6'},
-          {key: 'task7'},
-          {key: 'task8'},
-          {key: 'task9'},
-          {key: 'task10'},
-          {key: 'task11'},
-          {key: 'task12'},
-          // use map? 3
-          /*
-          <View>
-            {}
-          </View>
-          */
-        ]}
-        renderItem={({item}) => 
-          <Text style={styles.bodyText}>{item.key}</Text>
+        data={tasks}
+        renderItem={({item}) =>
+          <Pressable 
+          onPress={ () => navigation.navigate('TaskDetails')}>
+            <Text style={styles.TaskListText}>{item.key}</Text>
+          </Pressable>
+          
         }
       />
     </View>
     )
 }
-
-/*
-function Footer (){
-  return (
-    <View style={styles.footerContainer}>
-      <Image style={styles.footerContent} source={require('./sources/add-button.png')}></Image>
-    </View>
-  )
-}*/
 
 
 const styles = StyleSheet.create({
@@ -49,26 +26,13 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'space-between'
   },
-  topBarContainer : {
-    flex: 1,
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomWidth: 3,
-  },
-  topbar: {
-    fontSize: 24,
-    fontColor: 'black',
-    paddingTop: 50,
-    paddingBottom: 40,
-  },
-  bodyContainer: {
+  TaskListContainer: {
     flex:8,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'green'
   },
-  bodyText:{
+  TaskListText:{
     fontSize: 24,
     padding: 10,
     paddingLeft: 150,
@@ -76,21 +40,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     margin: 5,
   },
-  footerContainer: {
-    flex: 1,
-    borderTopWidth: 3,
-    backgroundColor: 'blue',
-    alignItems: 'center',
-  },
-  footerContent:{
-    marginTop: 15,
-  }
 });
 
-export default function Home() {
+export default function Home({navigation}) {
   return (
     <View style={styles.container}>
-      <Body/>
+      <TaskList navigation={navigation}/>
     </View>
   );
 }
