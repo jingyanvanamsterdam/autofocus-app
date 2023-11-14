@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native'; 
 
 function Feature(props) {
   return <Text style={styles.featureStyle}>{props.txt}</Text> 
@@ -13,15 +13,20 @@ function Description (props){
   )
 }
 
-export default function TaskDetails() {
+/*
+txt are going to be replaced by the {tasks} contents by id
+*/
+
+export default function TaskDetails({route, navigation}) {
+  const { task }  = route.params
   return (
       <View style={styles.bodyText}>
-        <Text style={styles.heading}>Task Title</Text>
+        <Text style={styles.heading}>{task.title}</Text>
         <View>
-          <Feature txt={"Due by " + Date()} />
-          <Feature txt={"Important: Y/N"} />
+          <Feature txt={"Due by " + task.deadline_date} />
+          <Feature txt={"Important: " + (task.isImportant ?  "👍":"👎")} />
         </View>
-        <Description txt={'description text'} />
+        <Description txt={task.details} />
       </View>
   );
 }

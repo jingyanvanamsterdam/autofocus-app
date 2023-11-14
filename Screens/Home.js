@@ -1,17 +1,20 @@
 import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
-import {tasks} from '../data/tasks'
 
-function TaskList ({ navigation }){
+import { useState } from 'react';
+
+function TaskList ({tasks, navigation }){
+  
   return (
     <View style= {styles.TaskListContainer}>
       <FlatList
         data={tasks}
         renderItem={({item}) =>
           <Pressable 
-          onPress={ () => navigation.navigate('TaskDetails')}>
-            <Text style={styles.TaskListText}>{item.key}</Text>
+          onPress={ () => navigation.navigate('TaskDetails', 
+          {task: item}
+          )}>
+            <Text style={styles.TaskListText}>{item.title}</Text>
           </Pressable>
-          
         }
       />
     </View>
@@ -33,19 +36,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'green'
   },
   TaskListText:{
-    fontSize: 24,
+    fontSize: 20,
     padding: 10,
-    paddingLeft: 150,
-    paddingRight: 150,
+    paddingLeft: 15,
+    paddingRight: 15,
     borderWidth: 2,
     margin: 5,
   },
 });
 
-export default function Home({navigation}) {
+export default function Home({tasks, navigation}) {
   return (
     <View style={styles.container}>
-      <TaskList navigation={navigation}/>
+      <TaskList tasks={tasks} navigation={navigation}/>
     </View>
   );
 }

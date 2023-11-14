@@ -2,77 +2,87 @@ import { StyleSheet, Text, View, TextInput, Switch, Button, Keyboard, TouchableW
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, {useState} from 'react';
 
+export default function AddTask (props){
+  const [title, setTitle] = useState(''); 
+  const [deadline, setDeadline] = useState(new Date()); 
+  const [description, setDescription] = useState('');
+  const [importance, setImportance] = useState(false);
+  const toggleSwitch = () => setImportance(previousSate => !previousSate); 
 
-const TaskTitle = () => {
-    const [text, onChangeText] = useState('');
-    return (
-        <TextInput
-          placeholder = 'Type your task title'
-          onChangeText = {newText => onChangeText(newText)}
-          value = {text}
-          style={styles.taskTitle}
-          />
-    )
-  }
-  
-  const DeadLine = () => {
-    const [chosenDate, setChosenDate] = useState(new Date());
-    const setActualDate = (event, theDate)=>{
-      setChosenDate(theDate)
+  function handleSubmit(event){
+    const task = {
+      title: title, 
+      deadline_date: deadline,
+      details: description,
+      isImportant: importance
     }
-    return (
-      <View style={styles.deadLine}>
-        <Text style={styles.deadLineText}>Due by:</Text>
-        <DateTimePicker value = {chosenDate} onChange = {setActualDate} />
-      </View>
-    )
+    if(task.title.length > 0){
+      props.addTask(task)
+    }
+    setTitle('')
+    setDeadline(new Date())
+    setDescription('')
+    setImportance(false)
+    props.navigation.navigate('Home')
   }
-  
-  const Importance = () => {
-    const [isEnabled, setIsEnabled] = useState (false); 
-    const toggleSwitch = () => setIsEnabled(previousSate => !previousSate); 
-    return (
-      <View style={styles.importance}>
-        <Text style={styles.importanceText}>Importance</Text>
-        <Switch
-          trackColor={{false: 'red', true: 'green'}}
-          thumbColor={isEnabled ? 'yellow':'orange'}
-          ios_backgroundColor='#3e3e3e'
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
-      </View>
-    )
-  }
-  
+
   const DismissKeyboard = ({ children }) => (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
       {children}
     </TouchableWithoutFeedback>
   );
-  
-  const Description =()=>{
-    const [text, setChangeText] = useState(''); 
-    return (
-        <View>
-          <Text style={styles.description}>Description: </Text>
-          <TextInput style={styles.descriptionInput}
-          multiline = {true}
-          onChangeText= {setChangeText}
-          value={text}
-          placeholder={'description text'}
+  const setActualDate = (event, theDate) => {
+    setDeadline(theDate)
+  }
+    
+  return (
+    //<DismissKeyboard>
+      <View style= {styles.bodyContainer}>
+        <TextInput
+          placeholder = 'Type your task title'
+          onChangeText = {newText => setTitle(newText)}
+          value = {title}
+          style={styles.taskTitle}
+          />
+
+        <View style={styles.deadLine}>
+          <Text style={styles.deadLineText}>Due by:</Text>
+          <DateTimePicker 
+            value = {deadline} 
+            onChange = {setActualDate} 
           />
         </View>
+
+        <View style={styles.importance}>
+          <Text style={styles.importanceText}>Importance</Text>
+          <Switch
+            trackColor={{false: 'red', true: 'green'}}
+            thumbColor={importance ? 'yellow':'orange'}
+            ios_backgroundColor='#3e3e3e'
+            onValueChange={toggleSwitch}
+            value={importance}
+          />
+        </View>
+
+        <View>
+          <Text style={styles.description}> Description: </Text>
+          <TextInput 
+            style={styles.descriptionInput}
+            multiline = {true}
+            onChangeText= {setDescription}
+            value={description}
+            placeholder={'Write details about the task'}
+          />
+        </View>
+        <Button 
+          style={styles.submit} 
+          title={"Submit"} 
+          onPress={handleSubmit}/>
+     </View>
+    //</DismissKeyboard>
     )
-  }
-  
-  const Submit =()=>{
-    return(
-      <Button 
-      style={styles.submit} 
-      title={"Submit"} />
-    )
-  }
+}
+
 
   const styles = StyleSheet.create({
     container: {
@@ -143,16 +153,4 @@ const TaskTitle = () => {
     },
   });
 
-  export default function AddTask (){
-    return (
-      <DismissKeyboard>
-        <View style= {styles.bodyContainer}>
-          <TaskTitle/>
-          <DeadLine />
-          <Importance />
-          <Description />
-          <Submit />
-       </View>
-      </DismissKeyboard>
-      )
-  }
+  
