@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View, Button } from 'react-native'; 
-import Archive from '../components/archive';
 
 function Feature(props) {
   return <Text style={styles.featureStyle}>{props.txt}</Text> 
@@ -19,6 +18,7 @@ txt are going to be replaced by the {tasks} contents by id
 */
 
 export default function TaskDetails({toArchive, route, navigation, toBin}) {
+  
   const { task }  = route.params 
 
   function handleArchive(){

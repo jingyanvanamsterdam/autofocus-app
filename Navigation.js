@@ -9,30 +9,13 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import TaskDetails from './Screens/TaskDetails';
 import {tasks} from './data/tasks'
 import { useState } from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
+// Drawer of Archive and Bin
 
+const Drawer = createDrawerNavigator();
 
-//Stack of home-taskdetails
-
-const Stack = createNativeStackNavigator(); 
-function StackGroup({tasks, toArchive, toBin}){
-    return(
-        <Stack.Navigator>
-            <Stack.Screen name='Home' options={{headerShown: false}}>
-                {(props)=><Home {...props} tasks={tasks} />}
-            </Stack.Screen>
-            <Stack.Screen name='TaskDetails' options={{presentation: 'modal'}}>
-                {(props)=> <TaskDetails {...props} toArchive={toArchive} toBin={toBin}/>}
-            </Stack.Screen>
-        </Stack.Navigator>
-    )
-}
-
-//Tab bottom
-const Tab = createBottomTabNavigator(); 
-
-function TabGroup(){
-    
+function MainNavigator() {
     const [currentTasks, setCurrentTasks] = useState(tasks); 
 
     function toArchive(taskArchivedID){
@@ -49,7 +32,6 @@ function TabGroup(){
             }
             return task}))
     }
-
     function addTask(task){
         setCurrentTasks((prev)=>{return [task, ...prev]})
       };
@@ -57,6 +39,46 @@ function TabGroup(){
     const activeTasks = currentTasks.filter((task)=> !task.isArchived && !task.isBinned)
     const archivedTasks = currentTasks.filter((task)=> task.isArchived && !task.isBinned)
     const binnedTasks = currentTasks.filter((task)=> task.isBinned)
+    
+  return (
+    <Drawer.Navigator>
+        <Drawer.Screen name="AutoFocus">
+            {(props) => <TabGroup {...props} toArchive={toArchive} toBin={toBin} addTask={addTask} activeTasks={activeTasks} />}
+        </Drawer.Screen>
+
+        <Drawer.Screen name="Archive">
+            {(props) => <ArchiveList {...props} tasks={archivedTasks} />}
+        </Drawer.Screen>
+
+        <Drawer.Screen name="Bin">
+            {(props) => <BinnedList {...props} tasks={binnedTasks} />}
+        </Drawer.Screen>
+    </Drawer.Navigator>
+  );
+}
+
+
+//Stack of home-taskdetails
+
+const Stack = createNativeStackNavigator(); 
+function StackGroup({tasks, toArchive, toBin}){
+
+    return(
+        <Stack.Navigator>
+            <Stack.Screen name='Home' options={{headerShown: false}}>
+                {(props)=><Home {...props} tasks={tasks} />}
+            </Stack.Screen>
+            <Stack.Screen name='TaskDetails' options={{presentation: 'modal'}}>
+                {(props)=> <TaskDetails {...props} toArchive={toArchive} toBin={toBin}/>}
+            </Stack.Screen>
+        </Stack.Navigator>
+    )
+}
+
+//Tab bottom
+const Tab = createBottomTabNavigator(); 
+
+function TabGroup({toArchive, toBin, addTask, activeTasks}){
     
     return(
         <Tab.Navigator
@@ -78,12 +100,6 @@ function TabGroup(){
             <Tab.Screen name='AddTasks' options={{headerShown: false}}>
                 {(props) => <AddTask {...props} addTask={addTask} />}
                 </Tab.Screen>
-            <Tab.Screen name='Archive'>
-                {(props) => <ArchiveList {...props} tasks={archivedTasks} />}
-                </Tab.Screen>
-            <Tab.Screen name='Binned'>
-                {(props) => <BinnedList {...props} tasks={binnedTasks} />}
-                </Tab.Screen>
         </Tab.Navigator>
     )
 }
@@ -92,7 +108,7 @@ function TabGroup(){
 export default function Navigation(){
     return (
         <NavigationContainer>
-            <TabGroup />
+            <MainNavigator />
         </NavigationContainer>
     )
 }

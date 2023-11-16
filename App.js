@@ -1,6 +1,11 @@
+import 'react-native-gesture-handler';
 import { StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 import Navigation from './Navigation'; 
+
+
+
+
 
 function Header () {
   return (
@@ -15,7 +20,6 @@ function Header () {
 export default function App() {
   return (
     <View style={styles.container}>
-      <Header />
       <Navigation />
     </View>
   );
