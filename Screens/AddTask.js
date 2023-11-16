@@ -5,6 +5,8 @@ import React, {useState} from 'react';
 export default function AddTask (props){
   const [title, setTitle] = useState(''); 
   const [deadline, setDeadline] = useState(new Date()); 
+  //initial date need to be able to set as null. but datepicker has to accept a value
+
   const [description, setDescription] = useState('');
   const [importance, setImportance] = useState(false);
   const toggleSwitch = () => setImportance(previousSate => !previousSate); 
@@ -36,7 +38,7 @@ export default function AddTask (props){
   }
     
   return (
-    //<DismissKeyboard>
+    //<DismissKeyboard> giving every input a dismiss
       <View style= {styles.bodyContainer}>
         <TextInput
           placeholder = 'Type your task title'

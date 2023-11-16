@@ -50,6 +50,3 @@ export default function Home({tasks, navigation}) {
     </View>
   );
 }
-
-
-

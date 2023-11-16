@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'; 
+import { StyleSheet, Text, View, Button } from 'react-native'; 
+import Archive from '../components/archive';
 
 function Feature(props) {
   return <Text style={styles.featureStyle}>{props.txt}</Text> 
@@ -17,8 +18,19 @@ function Description (props){
 txt are going to be replaced by the {tasks} contents by id
 */
 
-export default function TaskDetails({route, navigation}) {
-  const { task }  = route.params
+export default function TaskDetails({toArchive, route, navigation, toBin}) {
+  const { task }  = route.params 
+
+  function handleArchive(){
+    toArchive(task.id)
+    navigation.navigate("Home")
+  }
+
+  function handleDelete(){
+    toBin(task.id)
+    navigation.navigate('Home')
+  }
+
   return (
       <View style={styles.bodyText}>
         <Text style={styles.heading}>{task.title}</Text>
@@ -27,6 +39,8 @@ export default function TaskDetails({route, navigation}) {
           <Feature txt={"Important: " + (task.isImportant ?  "👍":"👎")} />
         </View>
         <Description txt={task.details} />
+        <Button title={"Archive"} onPress={handleArchive}/>
+        <Button title={"Delete"} onPress={handleDelete}/>
       </View>
   );
 }

@@ -18,7 +18,7 @@ export const tasks = [
         "details": "Includes the floor and toilet",
         "isImportant": true, 
         "isArchived": false, 
-        "isBinned": true, 
+        "isBinned": false, 
     },
 
     {
