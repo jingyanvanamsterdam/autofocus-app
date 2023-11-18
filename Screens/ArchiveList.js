@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Home({tasks, navigation}) {
+export default function ArchiveList({tasks, navigation}) {
   return (
     <View style={styles.container}>
       <TaskList tasks={tasks} navigation={navigation}/>

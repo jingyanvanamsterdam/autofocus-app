@@ -20,17 +20,21 @@ function MainNavigator() {
 
     function toArchive(taskArchivedID){
         setCurrentTasks((prev) => prev.map(
-            (task) => {if(task.id === taskArchivedID){ 
-                return {...task, isArchived: !task.isArchived};
-            }
-            return task}))}
+            (task) => {if(task.id === taskArchivedID && task.isBinned === true){ 
+                return {...task, isArchived: !task.isArchived, isBinned: !task.isBinned};
+            } else if(task.id === taskArchivedID){
+                return {...task, isArchived: !task.isArchived}
+            } else {return task}
+            }))}
         
     function toBin(taskBinnedID){
         setCurrentTasks((prev)=> prev.map(
-            (task) => {if(task.id === taskBinnedID){
-                return {...task, isBinned: !task.isBinned}; 
-            }
-            return task}))
+            (task) => {if(task.id === taskBinnedID && task.isArchived === true){
+                return {...task, isBinned: !task.isBinned, isArchived: !task.isArchived}; 
+            } else if(task.id === taskBinnedID){
+                return {...task, isBinned: !task.isBinned}
+            } else {return task}
+            }))
     }
     function addTask(task){
         setCurrentTasks((prev)=>{return [task, ...prev]})
@@ -47,11 +51,11 @@ function MainNavigator() {
         </Drawer.Screen>
 
         <Drawer.Screen name="Archive">
-            {(props) => <ArchiveList {...props} tasks={archivedTasks} />}
+            {(props) => <StackGroupArchive {...props} toArchive={toArchive} toBin={toBin} tasks={archivedTasks} />}
         </Drawer.Screen>
 
         <Drawer.Screen name="Bin">
-            {(props) => <BinnedList {...props} tasks={binnedTasks} />}
+            {(props) => <StackGroupBin {...props} toArchive={toArchive} toBin={toBin} tasks={binnedTasks} />}
         </Drawer.Screen>
     </Drawer.Navigator>
   );
@@ -61,7 +65,8 @@ function MainNavigator() {
 //Stack of home-taskdetails
 
 const Stack = createNativeStackNavigator(); 
-function StackGroup({tasks, toArchive, toBin}){
+
+function StackGroupHome({tasks, toArchive, toBin}){
 
     return(
         <Stack.Navigator>
@@ -69,6 +74,30 @@ function StackGroup({tasks, toArchive, toBin}){
                 {(props)=><Home {...props} tasks={tasks} />}
             </Stack.Screen>
             <Stack.Screen name='TaskDetails' options={{presentation: 'modal'}}>
+                {(props)=> <TaskDetails {...props} toArchive={toArchive} toBin={toBin}/>}
+            </Stack.Screen>
+        </Stack.Navigator>
+    )
+}
+function StackGroupArchive({tasks, toArchive, toBin}){
+    return(
+        <Stack.Navigator>
+            <Stack.Screen name='ArchiveList' options={{headerShown: false}} >
+                {(props) => <ArchiveList {...props} tasks={tasks} />}   
+            </Stack.Screen>
+            <Stack.Screen name='TaskDetails'  options={{presentation: 'modal'}}>
+                {(props)=> <TaskDetails {...props} toArchive={toArchive} toBin={toBin}/>}
+            </Stack.Screen>
+        </Stack.Navigator>
+    )
+}
+function StackGroupBin({tasks, toArchive, toBin}){
+    return(
+        <Stack.Navigator>
+            <Stack.Screen name='BinList' options={{headerShown: false}}>
+                {(props) => <BinnedList {...props} tasks={tasks} />}
+            </Stack.Screen>
+            <Stack.Screen name='TaskDetails'  options={{presentation: 'modal'}}>
                 {(props)=> <TaskDetails {...props} toArchive={toArchive} toBin={toBin}/>}
             </Stack.Screen>
         </Stack.Navigator>
@@ -94,8 +123,8 @@ function TabGroup({toArchive, toBin, addTask, activeTasks}){
             },
             tabBarInactiveTintColor: 'gray',
             })}>
-            <Tab.Screen name='StackGroup' options={{headerShown: false}}>
-                {(props) => <StackGroup {...props} toArchive={toArchive} toBin={toBin} tasks={activeTasks} />}
+            <Tab.Screen name='StackGroupHome' options={{headerShown: false}}>
+                {(props) => <StackGroupHome {...props} toArchive={toArchive} toBin={toBin} tasks={activeTasks} />}
                 </Tab.Screen>
             <Tab.Screen name='AddTasks' options={{headerShown: false}}>
                 {(props) => <AddTask {...props} addTask={addTask} />}

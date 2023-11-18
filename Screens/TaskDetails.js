@@ -23,14 +23,48 @@ export default function TaskDetails({toArchive, route, navigation, toBin}) {
 
   function handleArchive(){
     toArchive(task.id)
-    navigation.navigate("Home")
+    if(task.isArchived === true){
+      navigation.navigate("Home")
+    } else if(task.isBinned===true){
+      navigation.navigate("ArchiveList")
+    } else{
+      navigation.navigate("Home")
+    }
   }
 
   function handleDelete(){
     toBin(task.id)
-    navigation.navigate('Home')
+    if(task.isArchived === true){
+      navigation.navigate("BinList")
+    } else {
+      navigation.navigate("Home")
+    } 
+    }
+  
+  function Buttons(){
+    if(task.isArchived===true){
+      return (
+        <View>
+          <Button title={'Bin'} onPress={handleDelete} />
+          <Button title={'Move Back'} onPress={handleArchive} />
+        </View>
+      )
+    } else if(task.isBinned===true){
+      return (
+        <View>
+          <Button title={'Archive'} onPress={handleArchive} />
+          <Button title={'Move Back'} onPress={handleDelete} />
+        </View>
+      )
+    } else{
+      return (
+        <View>
+          <Button title={'Archive'} onPress={handleArchive} />
+          <Button title={'Bin'} onPress={handleDelete}/>
+        </View>
+      )
+    }
   }
-
   return (
       <View style={styles.bodyText}>
         <Text style={styles.heading}>{task.title}</Text>
@@ -39,8 +73,7 @@ export default function TaskDetails({toArchive, route, navigation, toBin}) {
           <Feature txt={"Important: " + (task.isImportant ?  "👍":"👎")} />
         </View>
         <Description txt={task.details} />
-        <Button title={"Archive"} onPress={handleArchive}/>
-        <Button title={"Delete"} onPress={handleDelete}/>
+        {<Buttons />}
       </View>
   );
 }
