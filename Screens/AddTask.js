@@ -39,26 +39,26 @@ export default function AddTask (props){
     
   return (
     //<DismissKeyboard> giving every input a dismiss
-      <View style= {styles.bodyContainer}>
+      <View className='items-stretch'>
         <TextInput
           placeholder = 'Type your task title'
           onChangeText = {newText => setTitle(newText)}
           value = {title}
-          style={styles.taskTitle}
+          className='mx-5 mt-5 border-2 border-solid p-3'
           />
 
-        <View style={styles.deadLine}>
-          <Text style={styles.deadLineText}>Due by:</Text>
+        <View className='mt-5 mx-12 flex-row items-center justify-between'>
+          <Text className='text-xl'>Due by:</Text>
           <DateTimePicker 
             value = {deadline} 
             onChange = {setActualDate} 
           />
         </View>
 
-        <View style={styles.importance}>
-          <Text style={styles.importanceText}>Importance</Text>
+        <View className='mt-5 mx-12 flex-row items-center justify-between'>
+          <Text className='text-xl'>Importance</Text>
           <Switch
-            trackColor={{false: 'red', true: 'green'}}
+            trackColor={{false: 'red', true: 'black'}}
             thumbColor={importance ? 'yellow':'orange'}
             ios_backgroundColor='#3e3e3e'
             onValueChange={toggleSwitch}
@@ -67,92 +67,21 @@ export default function AddTask (props){
         </View>
 
         <View>
-          <Text style={styles.description}> Description: </Text>
+          <Text className='mt-5 mx-12 text-xl'> Description: </Text>
           <TextInput 
-            style={styles.descriptionInput}
+            className = 'mx-7 mt-5 border-2 border-solid p-3 h-auto'
             multiline = {true}
             onChangeText= {setDescription}
             value={description}
             placeholder={'Write details about the task'}
           />
         </View>
-        <Button 
-          style={styles.submit} 
+        <Button  
           title={"Submit"} 
           onPress={handleSubmit}/>
      </View>
     //</DismissKeyboard>
     )
 }
-
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'stretch',
-      justifyContent: 'space-between'
-    },
-  
-    bodyContainer: {
-      flex:8,
-      alignItems: 'stretch',
-      backgroundColor: 'green',
-    },
-  
-    taskTitle:{
-      marginTop: 20,
-      marginRight: 30, 
-      marginLeft: 30,
-      borderWidth: 2,
-      padding: 11,
-    },
-  
-    deadLine:{
-      marginTop: 20,
-      marginRight: 50,
-      marginLeft: 50,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between' 
-    },
-    deadLineText:{
-      fontSize: 20,
-    },
-  
-    importance:{
-      marginTop: 20,
-      flexDirection: 'row',
-      marginRight: 50,
-      marginLeft: 50, 
-      alignItems: 'center',
-      justifyContent: 'space-between'
-    },
-    importanceText:{
-      fontSize: 20,
-    },
-  
-    description:{
-      marginTop: 20,
-      marginRight: 50, 
-      marginLeft: 50,
-      fontSize: 20,
-    },
-  
-    descriptionInput: {
-      marginTop: 20,
-      marginRight: 30, 
-      marginLeft: 30,
-      borderWidth: 2,
-      padding: 11,
-    },
-  
-    submit:{
-      marginTop: 30,
-      borderWidth: 10, 
-      backgroundColor: 'red',
-      fontSize: 100,
-    },
-  });
 
   
